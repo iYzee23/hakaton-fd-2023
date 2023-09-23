@@ -51,7 +51,7 @@ export default function App() {
       <StatusBar style="auto" />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#083694',
     alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   logoImage:{
     flex: 2,
