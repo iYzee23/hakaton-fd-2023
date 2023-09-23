@@ -3,52 +3,15 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import ExtendableView from './components/ExtendableView'
 import { globalStyles } from './styles/global';
+import FlashingButton from './FlashingButton';
 
 export default function App() {
-  const [station, setStation] = useState("Primer Ulice 23, Beograd");
-  const [spotNumber, setSpotNumber ] = useState("Tociono mesto 4");
-
-  useEffect(() => {
-    fetch('http://192.168.0.23:8000/cc4/getUsers/')
-      .then((response) => response.text())
-      .then((data) => setData(data))
-      .catch((error) => console.error(error))
-  }, []);
-
-  const emptyFunction = () => {
-    return;
-  }
-
   return (
     <View style={styles.container}>
-
-      <View style={styles.logoImage}>
-        <Image source={require('./assets/zapocniTocenje.png')} />
-        <View style={globalStyles.stationInfoContainer}>
-          <View style={styles.infoCont}>
-            <Text style={globalStyles.captionText}>Benzinska stanica: <Text style={globalStyles.stationInfoText}>{station}</Text></Text>
-          </View>
-          <View style={styles.infoCont}>
-            <Text style={globalStyles.captionText}>Tociono mesto: <Text style={globalStyles.stationInfoText}>{spotNumber}</Text></Text>
-          </View>
-        </View>
-      </View>
-      <View style={styles.entertainmentContainer}>
-
-        <ExtendableView emptyFunction={emptyFunction}>
-        </ExtendableView>
-
-      </View>
-
-      <View style={styles.cancelContainer}>
-          <TouchableOpacity onPress={emptyFunction}>
-              <View style={globalStyles.buttonStyle}>
-                <Text style={globalStyles.buttonText}>Odustani</Text>
-              </View>
-          </TouchableOpacity>
-      </View>
-      
-      <StatusBar style="auto" />
+      <FlashingButton onPress={() => {
+        // Handle the button press here
+        console.log('Button pressed!');
+      }} />
     </View>
   );
 };
