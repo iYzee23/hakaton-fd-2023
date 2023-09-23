@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Animated, PanResponder, Text } from 'react-native';
+import { View, Animated, PanResponder, Text, Image, StyleSheet, ImageBackground } from 'react-native';
+import FireImage from './assets/Fire.png'
+import YugoImage from './assets/Yugo.png'
+import GDriveImage from './assets/WhiteGDrive.png'
+import CanisterImage from './assets/GreenCanister.png'
+import FuelImage from './assets/GreenFuel.png'
+import CityImage from './assets/AnaLu.png'
 
 const BASE_WIDTH = 375;
 const BASE_HEIGHT = 667;
@@ -18,19 +24,30 @@ const FuelGame = ({ width, height }) => {
     onStartShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: (event, gesture) => {
-      const newX = gesture.moveX - collectorWidth / 2;
+      let newX = gesture.moveX - collectorWidth / 2;
+      if (newX < 0) {
+        newX = 0;
+      }
+      if (newX > width - collectorWidth) {
+        newX = width - collectorWidth;
+      }
       positionRef.current.setValue(newX);
     }
   });
 
   useEffect(() => {
     const generateCircles = setInterval(() => {
-      const newCircle = {
-        id: Math.random().toString(),
-        position: new Animated.Value(-circleSize),
-        start: Math.random() * (width - circleSize),
-        isBad: Math.random() > 0.5
-      };
+        const goodImages = [GDriveImage, FuelImage, CanisterImage];
+        const randomGoodImage = goodImages[Math.floor(Math.random() * 3)];
+        const isBad = Math.random() > 0.5;
+
+        const newCircle = {
+            id: Math.random().toString(),
+            position: new Animated.Value(-circleSize),
+            start: Math.random() * (width - circleSize),
+            isBad: isBad,
+            image: isBad ? FireImage : randomGoodImage
+          };
 
       const animation = Animated.timing(newCircle.position, {
         toValue: height,
@@ -45,7 +62,7 @@ const FuelGame = ({ width, height }) => {
         const circleBottom = newCircle.position._value + circleSize;
         const circleLeft = newCircle.start;
         const circleRight = circleLeft + circleSize;
-        const collectorTop = height - collectorHeight;
+        const collectorTop = height - collectorHeight - 20;
 
         if (circleBottom >= collectorTop && 
             circleLeft <= collectorX + collectorWidth && 
@@ -77,39 +94,53 @@ const FuelGame = ({ width, height }) => {
   }, []);
 
   return (
-    <View style={{ width, height, backgroundColor: 'lightblue', justifyContent: 'center', alignItems: 'center' }}>
+    <ImageBackground
+        source={CityImage} 
+        style={{ width, height, backgroundColor: 'lightblue', justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ fontSize: 24 * width / BASE_WIDTH, alignSelf: 'center' }}>Score: {score}</Text>
 
-      {circles.map(circle => (
+        {circles.map(circle => (
+            <Animated.View 
+                key={circle.id}
+                style={{
+                    height: circleSize,
+                    width: circleSize,
+                    position: 'absolute',
+                    top: circle.position,
+                    left: circle.start
+                }}
+            >
+                <Image source={circle.image} style={[{ width: '100%', height: '100%', borderRadius: circleSize / 2, resizeMode: 'cover' },
+                circle.isBad ? styles.glowEffect : {}
+                ]} />
+            </Animated.View>
+        ))}
         <Animated.View 
-          key={circle.id}
-          style={{
-            height: circleSize,
-            width: circleSize,
-            borderRadius: circleSize / 2,
-            backgroundColor: circle.isBad ? 'red' : 'green',
-            position: 'absolute',
-            top: circle.position,
-            left: circle.start
-          }}
-        />
-      ))}
+            style={[
+                { 
+                    left: positionRef.current,
+                    height: collectorHeight, 
+                    width: collectorWidth, 
+                    position: 'absolute', 
+                    bottom: 40
+                }
+            ]} 
+            {...panResponder.panHandlers}
+        >
+            <Image source={YugoImage} style={{ width: '100%', height: '200%' }} />
+        </Animated.View>
 
-      <Animated.View 
-        style={[
-          { 
-            left: positionRef.current,
-            height: collectorHeight, 
-            width: collectorWidth, 
-            backgroundColor: 'blue', 
-            position: 'absolute', 
-            bottom: 0
-          }
-        ]} 
-        {...panResponder.panHandlers}
-      />
-    </View>
+    </ImageBackground>
   );
 };
 
 export default FuelGame;
+
+const styles = StyleSheet.create({
+    glowEffect: {
+        backgroundColor: 'rgba(255, 0, 0, 0.5)',
+        borderWidth: 2,
+        borderColor: 'red',
+    },
+    // ... other styles ...
+});

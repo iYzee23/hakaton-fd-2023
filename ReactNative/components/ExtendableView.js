@@ -3,6 +3,7 @@ import { View, Button, StyleSheet, TouchableOpacity, Text, Image } from 'react-n
 import { globalStyles } from '../styles/global';
 import FuelGame from '../FuelGame';
 
+
 export default function ExpandableView({emptyFunction}) {
   // Declare a state variable to determine if the view is expanded or not
   const [isExpanded, setIsExpanded] = useState(false);
@@ -32,7 +33,7 @@ export default function ExpandableView({emptyFunction}) {
                 <View style={styles.game}>
 
                     <View style={styles.container}>
-                        <FuelGame width={300} height={300} />
+                        <FuelGame width={300} height={410} />
                     </View>
 
                     <Text style={globalStyles.entertainmentText }>IGRICA</Text>
