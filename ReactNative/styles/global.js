@@ -25,6 +25,7 @@ export const globalStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#f0f1f1',
+        marginVertical: 9,
     },
     buttonText:{
         color:'#7db4f4',

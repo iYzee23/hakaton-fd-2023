@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, Button, StyleSheet, TouchableOpacity, Text, Image, Modal } from 'react-native';
+import { View, Button, StyleSheet, TouchableOpacity, Text, Image, Modal, Dimensions } from 'react-native';
 import { globalStyles } from '../styles/global';
 import FuelGame from '../FuelGame';
+import React, { useRef, useState, useEffect } from 'react';
 
 
 export default function ExpandableView({emptyFunction}) {
@@ -15,6 +15,19 @@ export default function ExpandableView({emptyFunction}) {
         { top: 100, left: 150 },
         // ... add more positions
     ];
+
+    const gameRef = useRef(null);
+    const [gameWidth, setGameWidth] = useState(0);
+    const [gameHeight, setGameHeight] = useState(0);
+
+    useEffect(() => {
+        if (gameRef.current) {
+            gameRef.current.measure((x, y, width, height) => {
+                setGameWidth(width * 0.9);
+                setGameHeight(height * 0.8);
+            });
+        }
+    }, []);
 
   return (
     <View style={styles.wrapper}>
@@ -73,18 +86,16 @@ export default function ExpandableView({emptyFunction}) {
                 </View>
             )}
             {isExpanded && (
-                <View style={styles.game}>
+                <View style={styles.game} ref={gameRef}>
 
                     <View style={styles.container}>
-                        <FuelGame width={300} height={410} />
+                        <FuelGame width={320} height={370}/>
+                        <TouchableOpacity  onPress={() => setIsExpanded(!isExpanded)}>
+                            <View style={globalStyles.buttonStyle }>
+                                <Text style={globalStyles.buttonText}>Obustavi igru</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
-
-                    <Text style={globalStyles.entertainmentText }>IGRICA</Text>
-                    <TouchableOpacity  onPress={() => setIsExpanded(!isExpanded)}>
-                        <View style={globalStyles.buttonStyle }>
-                            <Text style={globalStyles.buttonText}>Obustavi igru</Text>
-                        </View>
-                    </TouchableOpacity>
                 </View>
             )}
         </View>
@@ -134,9 +145,19 @@ const styles = StyleSheet.create({
     opacity: 0, 
   },
   container: {
-    flex: 1,
-    backgroundColor: '#083694',
+    flex: 5,
+    backgroundColor: 'rgb(151,141,130)',
     alignItems: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute', //odavde dodato
+    width: '100%',
+    height: '100%',
+    top: 0,
+  },
+  
+  game: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
