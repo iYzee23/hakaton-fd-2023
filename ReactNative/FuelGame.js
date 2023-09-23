@@ -43,10 +43,11 @@ const FuelGame = ({ width, height }) => {
 
         const newCircle = {
             id: Math.random().toString(),
-            position: new Animated.Value(-circleSize),
+            position: new Animated.Value(-circleSize + 40),
             start: Math.random() * (width - circleSize),
             isBad: isBad,
-            image: isBad ? FireImage : randomGoodImage
+            image: isBad ? FireImage : randomGoodImage,
+            opacity: new Animated.Value(0)
           };
 
       const animation = Animated.timing(newCircle.position, {
@@ -54,6 +55,12 @@ const FuelGame = ({ width, height }) => {
         duration: 3000 + Math.random() * 4000,
         useNativeDriver: false,
       });
+
+      Animated.timing(newCircle.opacity, {
+        toValue: 1,    // Fully opaque
+        duration: 700, // 0.5 second fade-in
+        useNativeDriver: false,
+    }).start();
 
       animation.start();
 
@@ -72,13 +79,13 @@ const FuelGame = ({ width, height }) => {
           } else {
             setScore(prev => prev + 1);
           }
-          animation.stop();
+          // animation.stop();
           clearInterval(collisionInterval);
           setCircles(prev => prev.filter(circle => circle.id !== newCircle.id));
         }
 
         if (circleBottom >= height) {
-          animation.stop();
+          // animation.stop();
           clearInterval(collisionInterval);
           setCircles(prev => prev.filter(circle => circle.id !== newCircle.id));
         }
@@ -103,6 +110,7 @@ const FuelGame = ({ width, height }) => {
             <Animated.View 
                 key={circle.id}
                 style={{
+                    opacity: circle.opacity,
                     height: circleSize,
                     width: circleSize,
                     position: 'absolute',

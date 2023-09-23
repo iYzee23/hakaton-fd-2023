@@ -1,22 +1,65 @@
 import React, { useState } from 'react';
-import { View, Button, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+import { View, Button, StyleSheet, TouchableOpacity, Text, Image, Modal } from 'react-native';
 import { globalStyles } from '../styles/global';
 import FuelGame from '../FuelGame';
 
 
 export default function ExpandableView({emptyFunction}) {
-  // Declare a state variable to determine if the view is expanded or not
-  const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    const imagePositions = [
+        { top: 50, left: 50 },
+        { top: 100, left: 150 },
+        // ... add more positions
+    ];
 
   return (
     <View style={styles.wrapper}>
-
+        
         {!isExpanded && (
+            <>
             <View style={[styles.mapContainer, isExpanded ? styles.invisible : {}]}>
                 <Image style={styles.mapStyle} source={require('../assets/mapExample.png')} />
-                <Text style={globalStyles.entertainmentText}>Sa gorivom koje ste natocili prosli put, mogli ste da stignete do MestoX!</Text>
+
+
+                {imagePositions.map((position, index) => (
+                    <TouchableOpacity 
+                        key={index} 
+                        style={{ position: 'absolute', top: position.top, left: position.left }} 
+                        onPress={() => setModalVisible(true)}
+                    >
+                        <Image style={styles.smallImageStyle} source={require('../assets/mapPin.png')} />
+                    </TouchableOpacity>
+                ))}
+
+                <Text style={globalStyles.entertainmentText}>Sa gorivom koje ste natocili prosli put,
+                 mogli ste da stignete do MestoX!</Text>
             </View>
+
+
+            {modalVisible && (
+                <TouchableOpacity 
+                    style={styles.overlay} 
+                    onPress={() => setModalVisible(false)}
+                >
+                    <View style={styles.popup}>
+                        <Text style={styles.closeText}>X</Text>
+                        <View style={styles.pinPlace}>
+                            <Image style={styles.smallImageStyle} source={require('../assets/mapPin.png')} />
+                            <Text style={[globalStyles.stationInfoText, styles.naslov]}>Naziv mesta</Text>
+                        </View>
+                        
+                        <Text style={[globalStyles.captionText, styles.tekst]}>Informacije o odredjenom mestu
+                         koje je oznaceno pinom. Neki fun fact, sta se moze razgledati u okolini i slicno...</Text>
+                    </View>
+                </TouchableOpacity>
+            )}
+            </>
         )}
+        
 
         <View style={isExpanded ? styles.expandedContainer : styles.gameContainer}>
             {!isExpanded && (
@@ -97,4 +140,47 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  smallImageStyle: {
+    width: 40, // or whatever size you need
+    height: 40, 
+    },
+    overlay: {
+        position: 'absolute',
+        top: 15,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'top',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0)', // Semi-transparent overlay
+    },
+    popup: {
+        width: 300,
+        height: 320,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    closeText:{
+        position: 'absolute', 
+        top: 5, 
+        right: 5,
+        fontWeight: 'bold',
+        fontSize: 20,
+    },
+    naslov:{
+        fontSize: 20,
+        paddingVertical: 20
+    },
+    tekst:{
+        fontSize: 15,
+        padding: 10
+    },
+    pinPlace:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
+   
 });
