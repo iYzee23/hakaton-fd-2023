@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Button, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import { globalStyles } from '../styles/global';
+import FuelGame from '../FuelGame';
 
 export default function ExpandableView({emptyFunction}) {
   // Declare a state variable to determine if the view is expanded or not
@@ -29,12 +30,17 @@ export default function ExpandableView({emptyFunction}) {
             )}
             {isExpanded && (
                 <View style={styles.game}>
-                <Text style={globalStyles.entertainmentText }>IGRICA</Text>
-                <TouchableOpacity  onPress={() => setIsExpanded(!isExpanded)}>
-                    <View style={globalStyles.buttonStyle }>
-                        <Text style={globalStyles.buttonText}>Obustavi igru</Text>
+
+                    <View style={styles.container}>
+                        <FuelGame width={300} height={300} />
                     </View>
-                </TouchableOpacity>
+
+                    <Text style={globalStyles.entertainmentText }>IGRICA</Text>
+                    <TouchableOpacity  onPress={() => setIsExpanded(!isExpanded)}>
+                        <View style={globalStyles.buttonStyle }>
+                            <Text style={globalStyles.buttonText}>Obustavi igru</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             )}
         </View>
@@ -82,5 +88,12 @@ const styles = StyleSheet.create({
   },
   invisible: {
     opacity: 0, 
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#083694',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
