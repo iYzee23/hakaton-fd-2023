@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 
-const FlashingButton = ({ onPress }) => {
+const FlashingButton = ({ onPress, disabled }) => {
     const fadeAnim = useRef(new Animated.Value(1)).current;
     const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -40,9 +40,9 @@ const FlashingButton = ({ onPress }) => {
 
     return (
         <View style={styles.glowContainer}>
-            <Animated.View style={{ opacity: fadeAnim, transform: [{ scale: scaleAnim }] }}>
-                <TouchableOpacity onPress={onPress} style={styles.button}>
-                    <Text style={styles.buttonText}>Click Me</Text>
+            <Animated.View style={{ opacity: disabled ? 0.2 : fadeAnim }}>
+                <TouchableOpacity onPress={disabled ? null : onPress} disabled={disabled} style={styles.button}>
+                    <Text style={styles.buttonText}>Osvojite vredne nagrade</Text>
                 </TouchableOpacity>
             </Animated.View>
         </View>
@@ -50,21 +50,21 @@ const FlashingButton = ({ onPress }) => {
 };
 
 const styles = StyleSheet.create({
-    glowContainer: {
-        backgroundColor: 'rgba(173, 216, 230, 0.4)',  // Light blue color with some transparency for the glow
-        borderRadius: 10,
-        padding: 5,
-    },
+    
     button: {
-        backgroundColor: 'lightblue',
+        backgroundColor: '#083694',
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 5,
+        justifyContent: 'center',   // Center text vertically inside the button
+        alignItems: 'center',       // Center text horizontally inside the button
     },
     buttonText: {
         color: 'white',
         fontSize: 16,
+        textAlign: 'center',       // Ensure the text itself is centered
     },
 });
+
 
 export default FlashingButton;

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Button } from 'react-native';
 import { useState, useEffect } from 'react';
 import ExtendableView from './components/ExtendableView'
 import { globalStyles } from './styles/global';
@@ -9,6 +9,8 @@ import NagradaScreen from './components/NagradaScreen';
 export default function App() {
   const [station, setStation] = useState("Primer Ulice 23, Beograd");
   const [spotNumber, setSpotNumber ] = useState("Tociono mesto 4");
+  const [showTocenjeScreen, setShowTocenjeScreen] = useState(true);
+  const [endCountdown, setEndCountdown] = useState(null);
 
   useEffect(() => {
     fetch('http://192.168.0.23:8000/cc4/getUsers/')
@@ -17,13 +19,31 @@ export default function App() {
       .catch((error) => console.error(error))
   }, []);
 
+  const startTimerAndSwitchScreen = () => {
+    setEndCountdown(5); // Start the end countdown at 5 seconds
+    const interval = setInterval(() => {
+      setEndCountdown(prev => {
+        if (prev === 1) {
+          clearInterval(interval);
+          setShowTocenjeScreen(false);
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+  
+
   const emptyFunction = () => {
     return;
   }
 
   return (
     <View style={styles.container}>
-      <TocenjeScreen station={station} spotNumber={spotNumber} emptyFunction={emptyFunction}></TocenjeScreen>
+      {showTocenjeScreen ? (
+        <TocenjeScreen station={station} spotNumber={spotNumber} emptyFunction={emptyFunction} startTimerAndSwitchScreen={startTimerAndSwitchScreen} endCountdown={endCountdown} />
+      ) : (
+        <NagradaScreen />
+      )}
       <StatusBar style="auto" />
     </View>
   );

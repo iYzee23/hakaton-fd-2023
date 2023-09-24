@@ -2,13 +2,18 @@ import { View, Button, StyleSheet, TouchableOpacity, Text, Image, Modal, Dimensi
 import { globalStyles } from '../styles/global';
 import FuelGame from '../FuelGame';
 import React, { useRef, useState, useEffect } from 'react';
+import FlashingButton from '../FlashingButton';
 
 
-export default function ExpandableView({emptyFunction}) {
+export default function ExpandableView({emptyFunction, endCountdown}) {
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isButtonDisabled, setButtonDisabled] = useState(false);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
+
+    const [timer, setTimer] = useState(null);
+    const [countdown, setCountdown] = useState(null);
 
     const imagePositions = [
         { top: 50, left: 50 },
@@ -29,9 +34,34 @@ export default function ExpandableView({emptyFunction}) {
         }
     }, []);
 
+    const startGame = () => {
+        setIsExpanded(true);
+        const gameDuration = 15;  // in seconds
+        setTimer(
+            setTimeout(() => {
+                setIsExpanded(false);
+                setButtonDisabled(true);
+            }, gameDuration * 1000)
+        );
+    
+        // Countdown logic
+        setTimeout(() => {
+            let countdownValue = 5;
+            setCountdown(countdownValue);
+            const interval = setInterval(() => {
+                countdownValue -= 1;
+                setCountdown(countdownValue);
+                if (countdownValue <= 0) {
+                    clearInterval(interval);
+                    setCountdown(null);
+                }
+            }, 1000);
+        }, (gameDuration - 5) * 1000);
+    }
+    
+
   return (
     <View style={styles.wrapper}>
-        
         {!isExpanded && (
             <>
             <View style={[styles.mapContainer, isExpanded ? styles.invisible : {}]}>
@@ -78,20 +108,28 @@ export default function ExpandableView({emptyFunction}) {
             {!isExpanded && (
                 <View>
                 <Text style={ isExpanded ? styles.invisible : globalStyles.entertainmentText }>Igrajte igricu i osvojite nagrade!</Text>
-                <TouchableOpacity  onPress={() => setIsExpanded(!isExpanded)}>
+                {/* <TouchableOpacity  onPress={() => setIsExpanded(!isExpanded)}>
                     <View style={ isExpanded ? styles.invisible : globalStyles.buttonStyle }>
                         <Text style={globalStyles.buttonText}>Generic Clickbait Caption</Text>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                <FlashingButton onPress={startGame} disabled={isButtonDisabled} />
                 </View>
             )}
             {isExpanded && (
                 <View style={styles.game} ref={gameRef}>
 
                     <View style={styles.container}>
-                        <FuelGame width={320} height={370}/>
-                        <TouchableOpacity  onPress={() => setIsExpanded(!isExpanded)}>
-                            <View style={globalStyles.buttonStyle }>
+                        <FuelGame width={320} height={370} countdown={countdown} endCountdown={endCountdown}/>
+                        <TouchableOpacity onPress={() => {
+                            setIsExpanded(!isExpanded);
+                            setButtonDisabled(true);
+                            if (timer) {
+                                clearTimeout(timer);
+                                setTimer(null);
+                            }
+                        }}>
+                            <View style={globalStyles.buttonStyle}>
                                 <Text style={globalStyles.buttonText}>Obustavi igru</Text>
                             </View>
                         </TouchableOpacity>

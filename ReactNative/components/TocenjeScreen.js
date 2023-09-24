@@ -1,11 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Button } from 'react-native';
+import { useState, useEffect, useRef } from 'react';
 import ExtendableView from './ExtendableView'
 import { globalStyles } from '../styles/global'
 
-export default function TocenjeScreen({station, spotNumber, emptyFunction}) {
-    return (
+export default function TocenjeScreen({station, spotNumber, emptyFunction, startTimerAndSwitchScreen, endCountdown }) {
+    
+  const [countdown, setCountdown] = useState(null);
+  const inGameMode = useRef(false);
+
+  
+  return (
     <View>
     <View style={styles.logoImage}>
         <Image source={require('../assets/zapocniTocenje.png')} />
@@ -21,13 +26,29 @@ export default function TocenjeScreen({station, spotNumber, emptyFunction}) {
 
     <View style={styles.entertainmentContainer}>
 
-    <ExtendableView emptyFunction={emptyFunction}>
+    <ExtendableView emptyFunction={emptyFunction} endCountdown={endCountdown}>
     </ExtendableView>
 
     </View>
 
     <View style={styles.cancelContainer}>
-        <TouchableOpacity onPress={emptyFunction}>
+    <TouchableOpacity onPress={() => {
+      if (inGameMode.current) {
+        let timer = 5;
+        setCountdown(timer);
+        const interval = setInterval(() => {
+          timer -= 1;
+          setCountdown(timer);
+          if (timer <= 0) {
+            clearInterval(interval);
+            startTimerAndSwitchScreen();
+          }
+        }, 1000);
+      } else {
+        startTimerAndSwitchScreen();
+      }
+      inGameMode.current = false;  // Ensure you're no longer in game mode
+    }}>
             <View style={globalStyles.buttonStyle}>
                 <Text style={globalStyles.buttonText}>Odustani</Text>
             </View>

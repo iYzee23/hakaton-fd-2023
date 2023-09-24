@@ -10,9 +10,13 @@ import CityImage from './assets/AnaLu.png'
 const BASE_WIDTH = 375;
 const BASE_HEIGHT = 667;
 
-const FuelGame = ({ width, height }) => {
+const FuelGame = ({ width, height, countdown, endCountdown }) => {
   const [score, setScore] = useState(0);
   const [circles, setCircles] = useState([]);
+  const [gameTime, setGameTime] = useState(15); // 1 minute
+  const gameIsActive = useRef(true);
+
+
 
   const collectorWidth = 100 * width / BASE_WIDTH;
   const collectorHeight = 50 * height / BASE_HEIGHT;
@@ -34,6 +38,21 @@ const FuelGame = ({ width, height }) => {
       positionRef.current.setValue(newX);
     }
   });
+
+  const gameTimer = setInterval(() => {
+    if (gameIsActive.current) {
+      setGameTime(prevTime => {
+        if (prevTime === countdown) {
+          gameIsActive.current = false;
+        }
+        if (prevTime <= 1) {
+          clearInterval(gameTimer);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }
+  }, 1000);
 
   useEffect(() => {
     const generateCircles = setInterval(() => {
@@ -97,13 +116,22 @@ const FuelGame = ({ width, height }) => {
       };
     }, 1000);
 
-    return () => clearInterval(generateCircles);
+    return () => {
+      clearInterval(generateCircles);
+      clearInterval(gameTimer);
+      gameIsActive.current = false;
+    }
   }, []);
 
   return (
     <ImageBackground
         source={CityImage} 
         style={{ width, height, backgroundColor: 'lightblue', justifyContent: 'center', alignItems: 'center' }}>
+      {(countdown || endCountdown) && (
+            <Text style={{ position: 'absolute', top: 10, right: 10, fontSize: 24, color: 'red' }}>
+              00:{(endCountdown || countdown) < 10 ? `0${endCountdown || countdown}` : endCountdown || countdown}
+            </Text>
+        )}
       <Text style={{ fontSize: 24 * width / BASE_WIDTH, alignSelf: 'center' }}>Score: {score}</Text>
 
         {circles.map(circle => (
