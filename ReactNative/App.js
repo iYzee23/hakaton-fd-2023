@@ -5,6 +5,7 @@ import ExtendableView from './components/ExtendableView'
 import { globalStyles } from './styles/global';
 import TocenjeScreen from './components/TocenjeScreen';
 import NagradaScreen from './components/NagradaScreen';
+import RewardView from './components/RewardView';
 
 export default function App() {
   const [station, setStation] = useState("Primer Ulice 23, Beograd");
@@ -38,11 +39,11 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={showTocenjeScreen ? styles.container : styles.specialContainer}>
       {showTocenjeScreen ? (
         <TocenjeScreen station={station} spotNumber={spotNumber} emptyFunction={emptyFunction} startTimerAndSwitchScreen={startTimerAndSwitchScreen} endCountdown={endCountdown} />
       ) : (
-        <NagradaScreen emptyFunction={emptyFunction} />
+        <RewardView emptyFunction={emptyFunction} />
       )}
       <StatusBar style="auto" />
     </View>
@@ -55,7 +56,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#083694',
     alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center',
+  },
+  specialContainer:{
+    flex:1,
+    //backgroundColor: '#083694',
+    backgroundColor: 'rgb(242,242,242)'
   },
   logoImage:{
     flex: 2,
