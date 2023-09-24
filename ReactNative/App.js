@@ -42,7 +42,7 @@ export default function App() {
       {showTocenjeScreen ? (
         <TocenjeScreen station={station} spotNumber={spotNumber} emptyFunction={emptyFunction} startTimerAndSwitchScreen={startTimerAndSwitchScreen} endCountdown={endCountdown} />
       ) : (
-        <NagradaScreen />
+        <NagradaScreen emptyFunction={emptyFunction} />
       )}
       <StatusBar style="auto" />
     </View>
