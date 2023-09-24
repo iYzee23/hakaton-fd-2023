@@ -8,9 +8,6 @@ import { globalStyles } from '../styles/global'
 export default function NagradaScreen({emptyFunction}) {
     return (
         <View style={styles.container}>
-        <View style={styles.logoImage}>
-            <Image source={require('../assets/uspesnoPlacanje.png') } style={styles.image} />
-        </View>
 
         
         <View style={styles.entertainmentContainer}>
@@ -29,17 +26,6 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       alignItems: 'center',
-    },
-    logoImage:{
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingTop: 30,
-      paddingBottom:20,
-    },
-    image:{
-        height: 100,
-        width: 250,
     },
     entertainmentContainer:{
         flex: 6,

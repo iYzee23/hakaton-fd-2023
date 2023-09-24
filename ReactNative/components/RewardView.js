@@ -6,15 +6,39 @@ import React, { useRef, useState, useEffect } from 'react';
 
 export default function RewardView({emptyFunction}) {
     
+    const [isPaid, setIsPaid] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const [isClaimed, setIsClaimed] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={styles.wrapper}>
-        
-        {!isExpanded && (
+
+        {!isPaid && (
             <>
+            <View style={styles.containerFSC}>
+                <Image style={styles.fullPic} source={require('../assets/placanjeVECE.png')} />
+
+                <TouchableOpacity  onPress={() => setIsClaimed(!isClaimed)}>
+                    <View style={ isClaimed ?  styles.invisible : [globalStyles.buttonStyle,styles.buttonOverPhotoOne ]}>
+                        <Text style={ globalStyles.buttonText}>Plati</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity  onPress={() => setIsClaimed(!isClaimed)}>
+                    <View style={ isClaimed ?  styles.invisible : [globalStyles.buttonStyle,styles.buttonOverPhotoTwo ] }>
+                        <Text style={ globalStyles.buttonText}>Odustani</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+
+            </>
+        )}
+        
+        {!isExpanded && isPaid && (
+            <>
+            <View style={styles.logoImage}>
+                <Image source={require('../assets/uspesnoPlacanje.png') } style={styles.image} />
+            </View>
             <View style={styles.giftContainer}>
                 <Image style={styles.giftStyle} source={require('../assets/gift.png')} />
                 <View style={styles.textAndButton}>
@@ -30,7 +54,11 @@ export default function RewardView({emptyFunction}) {
             </>
         )}
 
-        {isExpanded && (
+        {isExpanded && isPaid && (
+            <>
+            <View style={styles.logoImage}>
+                <Image source={require('../assets/uspesnoPlacanje.png') } style={styles.image} />
+            </View>
                 <View style={styles.giftContainer}>
 
                     <View style={styles.container}>
@@ -42,9 +70,10 @@ export default function RewardView({emptyFunction}) {
                         </TouchableOpacity>
                     </View>
                 </View>
+                </>
         )}
 
-        {isClaimed && (
+        {isClaimed && isPaid && (
                 <View style={styles.ocenaContainer}>
                     <Image style={styles.oceni} source={require('../assets/oceniIskustvo.png')} />
                 </View>
@@ -160,6 +189,44 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
+    },   
+    logoImage:{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 30,
+        paddingBottom:20,
+    },
+    image:{
+        height: 100,
+        width: 250,
+    },
+    fullPic:{
+        flex: 1,
+        width: 385,          
+        resizeMode: 'stretch',   
+        transform: [{ scaleY: 1.03 }], 
+    },
+    containerFSC:{
+        flex:1,
+        position: 'relative',
+        width: '100%',
+        height: '100%', // or any desired height
+    },
+    buttonOverPhotoOne: {
+        position: 'absolute',
+        bottom: 65,   
+        left: 11,  
+        width: '95%', 
+        height: 55,
+        backgroundColor: 'orange',
+    },
+    buttonOverPhotoTwo: {
+        position: 'absolute',
+        bottom: -5,   
+        left: 11,  
+        width: '95%', 
+        height: 55,
     },
    
 });
