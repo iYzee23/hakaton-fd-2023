@@ -13,7 +13,7 @@ const BASE_HEIGHT = 667;
 const FuelGame = ({ width, height, countdown, endCountdown }) => {
   const [score, setScore] = useState(0);
   const [circles, setCircles] = useState([]);
-  const [gameTime, setGameTime] = useState(15); // 1 minute
+  const [gameTime, setGameTime] = useState(30); // 1 minute
   const gameIsActive = useRef(true);
 
 

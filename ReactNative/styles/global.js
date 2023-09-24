@@ -38,5 +38,9 @@ export const globalStyles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
+    buttonTextWhite:{
+        color:'white',
+        fontWeight: 'bold',
+    }
     
 })

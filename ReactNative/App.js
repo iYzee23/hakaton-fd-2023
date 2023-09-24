@@ -13,12 +13,12 @@ export default function App() {
   const [showTocenjeScreen, setShowTocenjeScreen] = useState(true);
   const [endCountdown, setEndCountdown] = useState(null);
 
-  useEffect(() => {
-    fetch('http://192.168.0.23:8000/cc4/getUsers/')
-      .then((response) => response.text())
-      .then((data) => setData(data))
-      .catch((error) => console.error(error))
-  }, []);
+  // useEffect(() => {
+  //   fetch('http://192.168.0.23:8000/cc4/getUsers/')
+  //     .then((response) => response.text())
+  //     .then((data) => setData(data))
+  //     .catch((error) => console.error(error))
+  // }, []);
 
   const startTimerAndSwitchScreen = () => {
     setEndCountdown(5); // Start the end countdown at 5 seconds

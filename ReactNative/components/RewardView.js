@@ -13,7 +13,7 @@ export default function RewardView({emptyFunction}) {
     const [casePaidFour, setPaidFour] = useState(false);
 
   return (
-    <View style={styles.wrapper}>
+    <View style={casePayment && !casePaidOne && !casePaidTwo && !casePaidThree && !casePaidFour ? styles.wrapper : styles.wrapperOne}>
 
         {casePayment && !casePaidOne && !casePaidTwo && !casePaidThree && !casePaidFour && (
             
@@ -24,12 +24,12 @@ export default function RewardView({emptyFunction}) {
 
                 <View style={styles.containerFSC}>
                 <TouchableOpacity  onPress={() =>  setPaidOne(true) }>
-                    <View style={[globalStyles.buttonStyle,styles.buttonOverPhotoOne ]}>
-                        <Text style={ globalStyles.buttonText}>Plati</Text>
+                    <View style={[globalStyles.buttonStyle,styles.buttonPay ]}>
+                        <Text style={ globalStyles.buttonTextWhite}>Plati</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <View style={ [globalStyles.buttonStyle,styles.buttonOverPhotoTwo ] }>
+                    <View style={ [globalStyles.buttonStyle,styles.buttonQuit] }>
                         <Text style={ globalStyles.buttonText}>Odustani</Text>
                     </View>
                 </TouchableOpacity>
@@ -69,7 +69,7 @@ export default function RewardView({emptyFunction}) {
                 </View>
                 <View style={styles.giftContainer}>
 
-                    <Image style={  styles.couponStyle} source={require('../assets/temporary.png') } />
+                    <Image style={  styles.couponStyle} source={require('../assets/gdrivead.png') } />
                     <TouchableOpacity  onPress={() => setPaidThree(true)}>
                         <View style={  globalStyles.buttonStyle }>
                             <Text style={ globalStyles.buttonText}>Dodaj kupon u inventar</Text>
@@ -107,6 +107,11 @@ const styles = StyleSheet.create({
     },
     wrapper: {
         flex: 1,
+       // backgroundColor: '#083694',
+       backgroundColor: 'rgb(242,242,242)',
+    },
+    wrapperOne:{
+        flex:1,
         backgroundColor: '#083694',
     },
 
@@ -163,5 +168,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: -90,
+    },
+    buttonPay:{
+        backgroundColor: 'rgb(255,127,27)'
+    },
+    buttonQuit:{
+        backgroundColor: 'white'
     },
 });

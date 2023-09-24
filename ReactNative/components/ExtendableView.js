@@ -36,7 +36,7 @@ export default function ExpandableView({emptyFunction, endCountdown}) {
 
     const startGame = () => {
         setIsExpanded(true);
-        const gameDuration = 15;  // in seconds
+        const gameDuration = 30;  // in seconds
         setTimer(
             setTimeout(() => {
                 setIsExpanded(false);
@@ -78,8 +78,7 @@ export default function ExpandableView({emptyFunction, endCountdown}) {
                     </TouchableOpacity>
                 ))}
 
-                <Text style={globalStyles.entertainmentText}>Sa gorivom koje ste natocili prosli put,
-                 mogli ste da stignete do MestoX!</Text>
+                <Text style={globalStyles.entertainmentText}>Poslednji put natocili ste 20L, sto bi vas dovelo do ovih lokacija!</Text>
             </View>
 
 
@@ -92,11 +91,11 @@ export default function ExpandableView({emptyFunction, endCountdown}) {
                         <Text style={styles.closeText}>X</Text>
                         <View style={styles.pinPlace}>
                             <Image style={styles.smallImageStyle} source={require('../assets/mapPin.png')} />
-                            <Text style={[globalStyles.stationInfoText, styles.naslov]}>Naziv mesta</Text>
+                            <Text style={[globalStyles.stationInfoText, styles.naslov]}>Sports One Bar Charlotte</Text>
                         </View>
                         
-                        <Text style={[globalStyles.captionText, styles.tekst]}>Informacije o odredjenom mestu
-                         koje je oznaceno pinom. Neki fun fact, sta se moze razgledati u okolini i slicno...</Text>
+                        <Text style={[globalStyles.captionText, styles.tekst]}>Fun fact: Ovaj šarmantni bar u srcu grada je proglašen za najpopularnije mesto za izlazak ove godine!  
+                        Takođe, Karađorđe je u njemu popio svoju prvu rakiju!</Text>
                     </View>
                 </TouchableOpacity>
             )}
