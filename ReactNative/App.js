@@ -10,6 +10,9 @@ export default function App() {
   const [station, setStation] = useState("Primer Ulice 23, Beograd");
   const [spotNumber, setSpotNumber ] = useState("Tociono mesto 4");
 
+  const [tocenjeScreen, setTocenjeScreen] = useState(false);
+  const [nagradaScreen, setNagradaScreen] = useState(true);
+
   useEffect(() => {
     fetch('http://192.168.0.23:8000/cc4/getUsers/')
       .then((response) => response.text())
@@ -23,8 +26,23 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <TocenjeScreen station={station} spotNumber={spotNumber} emptyFunction={emptyFunction}></TocenjeScreen>
-      <StatusBar style="auto" />
+    {tocenjeScreen && (
+      <>
+      <View >
+        <TocenjeScreen station={station} spotNumber={spotNumber} emptyFunction={emptyFunction}></TocenjeScreen>
+      </View>
+      </>
+    )}
+
+    {nagradaScreen && (
+      <>
+      <View >
+        <NagradaScreen emptyFunction={emptyFunction}></NagradaScreen>
+      </View>
+      </>
+    )}
+
+    <StatusBar style="auto" />
     </View>
   );
 };

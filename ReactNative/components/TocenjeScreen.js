@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
-import ExtendableView from './ExtendableView'
-import { globalStyles } from '../styles/global'
+import ExtendableView from './ExtendableView';
+import { globalStyles } from '../styles/global';
 
 export default function TocenjeScreen({station, spotNumber, emptyFunction}) {
     return (
